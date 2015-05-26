@@ -43,21 +43,29 @@ summary(data)
 
 
 ```r
-daynames <- unique(data$date)
 days <- group_by(data, date)
 days <- summarise(days, nintervals=n(), avgsteps=mean(steps,na.rm=TRUE), totsteps=nintervals*avgsteps)
-#days <- sapply(daynames, function(day) { sum(subset(data, date == day)$steps, na.rm=TRUE) })
 plot(days$date, days$totsteps, type="h",xlab="Date",ylab="Total Steps per Day",main="Histogram - Total Number of Steps per Day")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
  
  __Total Number of Steps per Day__  
- __Mean:__ 1.0766189\times 10^{4}  
- __Median:__ 1.0765\times 10^{4}  
+ __Mean:__ 10766.19  
+ __Median:__ 10765  
+
 
 ## What is the average daily activity pattern?
 
+
+```r
+days <- group_by(data, interval)
+days <- summarise(days, avgsteps=mean(steps,na.rm=TRUE))
+days <- mutate(days, minutes=(interval/100), seconds=(interval - 100*minutes + 60*minutes), index=seconds/5)
+plot(days$index, days$avgsteps, type="l", xlab="Interval", ylab="Average Steps", main="Daily Activity - Average Number of Steps")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 
 ## Imputing missing values
