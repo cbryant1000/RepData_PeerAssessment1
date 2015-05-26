@@ -70,6 +70,6 @@ plot(days$index, days$avgsteps, type="l", xlab="Interval", ylab="Average Steps",
 
 ## Imputing missing values
 
-
+__Total Number of NA's:__ 2304
 
 ## Are there differences in activity patterns between weekdays and weekends?

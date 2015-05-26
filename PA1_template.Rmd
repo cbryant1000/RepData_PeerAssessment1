@@ -41,6 +41,6 @@ plot(days$index, days$avgsteps, type="l", xlab="Interval", ylab="Average Steps",
 
 ## Imputing missing values
 
-
+__Total Number of NA's:__ `r length(subset(data, is.na(steps))$steps)`
 
 ## Are there differences in activity patterns between weekdays and weekends?
