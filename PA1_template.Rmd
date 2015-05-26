@@ -8,11 +8,28 @@ output:
 
 ## Loading and preprocessing the data
 
+```{r}
+data <- read.csv("activity.csv",stringsAsFactors=FALSE)
+data$date <- as.Date(data$date)
+summary(data)
+```
 
 
 ## What is mean total number of steps taken per day?
 
+```{r}
+daynames <- unique(data$date)
+days <- sapply(daynames, function(day) { sum(subset(data, date == day)$steps, na.rm=TRUE) })
+plot(daynames, days, type="h",xlab="Date",ylab="Total Steps per Day",main="Histogram - Total Number of Steps per Day")
+```
 
+```{r summarizedata, echo=FALSE}
+avgsteps <- mean(days)
+medsteps <- median(days)
+```
+ 
+ __Mean Number of Steps per Day:__ `r avgsteps`  
+ __Median Number of Steps per Day:__ `r medsteps`  
 
 ## What is the average daily activity pattern?
 
