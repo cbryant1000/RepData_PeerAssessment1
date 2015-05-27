@@ -73,3 +73,7 @@ summary(data)
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+1. Create a new _factor_ variable in the dataset, with two levels - "weekday" and "weekend," indicating whether a given date is a weekday or weekend day.  
+2. Make a panel plot containing a time series plot of the 5-minute interval and the average number of steps taken, averaged across all weekday days or weekend days.  
+
