@@ -91,7 +91,7 @@ __5-minute Interval Containing the Maximum Number of Steps__
 __Total Number of NA's:__ 2304
 
 __Strategy:__
-Replace the NA's in the dataset with the number of steps in each 5-minute interval averaged across the days with no NA's.  
+Replace the NA's in the dataset with the median number of steps in each 5-minute interval for the days with no NA's in that interval.  
 
 
 ```r
