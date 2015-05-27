@@ -56,7 +56,7 @@ __Total Number of Steps Taken Each Day:__
 
 ```r
 intervals <- group_by(data, interval)
-intervals <- summarise(intervals, avgsteps=mean(steps,na.rm=TRUE))
+intervals <- summarise(intervals, avgsteps=mean(steps,na.rm=TRUE), medsteps=median(steps,na.rm=TRUE))
 intervals <- mutate(intervals, minutes=as.integer(interval/100), seconds=(interval - 100*minutes), index=60*minutes + seconds)
 plot(intervals$index/60, intervals$avgsteps, type="l", xlab="Interval (hours)", ylab="Average Steps", main="Daily Activity - Average Number of Steps", axes=FALSE)
 axis(side=1, at=seq(0, 24, by=4))
@@ -74,10 +74,10 @@ maxinterval <- filter(intervals, avgsteps == maxsteps$maxsteps)
 __5-minute Interval Containing the Maximum Number of Steps__  
 
 ```
-## Source: local data frame [1 x 5]
+## Source: local data frame [1 x 6]
 ## 
-##   interval avgsteps minutes seconds index
-## 1      835 206.1698       8      35   515
+##   interval avgsteps medsteps minutes seconds index
+## 1      835 206.1698       19       8      35   515
 ```
 
 
@@ -89,6 +89,10 @@ __5-minute Interval Containing the Maximum Number of Steps__
 4. Make a histogram of the total number of steps taken each day.  Calculate and report the __mean__ and the __median__ total number of steps taken each day.  
 
 __Total Number of NA's:__ 2304
+
+__Strategy__
+Replace the NA's in the dataset with the number of steps in each 5-minute interval averaged across the days with no NA's.  
+
 
 ```r
 summary(data)
@@ -103,6 +107,26 @@ summary(data)
 ##  3rd Qu.: 12.00   3rd Qu.:2012-11-15   3rd Qu.:1766.2  
 ##  Max.   :806.00   Max.   :2012-11-30   Max.   :2355.0  
 ##  NA's   :2304
+```
+
+```r
+na <- filter(data, is.na(steps))
+notna <- filter(data, !is.na(steps))
+newdf <- inner_join(na, intervals, by="interval")
+newdf <- select(newdf, steps=medsteps, date, interval)
+newdata <- bind_rows(newdf, notna)
+newdata <- arrange(newdata, date, interval)
+summary(newdata)
+```
+
+```
+##      steps          date               interval     
+##  Min.   :  0   Min.   :2012-10-01   Min.   :   0.0  
+##  1st Qu.:  0   1st Qu.:2012-10-16   1st Qu.: 588.8  
+##  Median :  0   Median :2012-10-31   Median :1177.5  
+##  Mean   : 33   Mean   :2012-10-31   Mean   :1177.5  
+##  3rd Qu.:  8   3rd Qu.:2012-11-15   3rd Qu.:1766.2  
+##  Max.   :806   Max.   :2012-11-30   Max.   :2355.0
 ```
 
 
