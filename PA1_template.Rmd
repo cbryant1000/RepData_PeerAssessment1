@@ -13,7 +13,7 @@ output:
 
 ```{r}
 suppressPackageStartupMessages(library(dplyr))
-data <- read.csv("activity.csv",stringsAsFactors=FALSE)
+data <- read.csv("activity.csv", stringsAsFactors=FALSE)
 data$date <- as.Date(data$date)
 summary(data)
 ```
@@ -31,7 +31,9 @@ days <- group_by(data, date)
 days <- summarise(days, nintervals=n(), avgsteps=mean(steps,na.rm=TRUE), totsteps=nintervals*avgsteps)
 plot(days$date, days$totsteps, type="h",xlab="Date",ylab="Total Steps per Day",main="Histogram - Total Number of Steps per Day")
 ```
- 
+
+__Total Number of Steps Taken Each Day:__  
+
    Mean   |   Median  
 --------- | -----------  
 `r sprintf("%.2f", mean(days$totsteps, na.rm=TRUE))` | `r sprintf("%.0f", median(days$totsteps, na.rm=TRUE))`  

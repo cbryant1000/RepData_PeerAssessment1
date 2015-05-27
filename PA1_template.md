@@ -9,7 +9,7 @@
 
 ```r
 suppressPackageStartupMessages(library(dplyr))
-data <- read.csv("activity.csv",stringsAsFactors=FALSE)
+data <- read.csv("activity.csv", stringsAsFactors=FALSE)
 data$date <- as.Date(data$date)
 summary(data)
 ```
@@ -41,7 +41,9 @@ plot(days$date, days$totsteps, type="h",xlab="Date",ylab="Total Steps per Day",m
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
- 
+
+__Total Number of Steps Taken Each Day:__  
+
    Mean   |   Median  
 --------- | -----------  
 10766.19 | 10765  
