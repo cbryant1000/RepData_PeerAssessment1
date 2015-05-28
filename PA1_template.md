@@ -158,7 +158,7 @@ No | 9503.87 | 10395
 
 5. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?  
 
-The mean is much more sensitive to the effects of the missing data.  The median is also affected, but not as much by imputing values for the missing data.  Since these data are highly _skewed_, the median is a better measure of the location of the data.  
+__Answer:__ The mean is much more sensitive to the effects of the missing data.  The median is also affected, but not as much by imputing values for the missing data.  Since these data are highly _skewed_, the median is a better measure of the location of the data.  
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
