@@ -91,7 +91,7 @@ summary(newdata)
 ```{r}
 newdays <- group_by(newdata, date)
 newdays <- summarise(newdays, nintervals=n(), avgsteps=mean(steps,na.rm=TRUE), totsteps=nintervals*avgsteps)
-par(mfrow=c(1,2))
+par(mfrow=c(2,1),mar=c(3,2,2,1))
 plot(days$date, days$totsteps, type="h",xlab="Date",ylab="Total Steps per Day",main="Histogram - Missing Data")
 plot(newdays$date, newdays$totsteps, type="h",xlab="Date",ylab="Total Steps per Day",main="Histogram - Cleaned Data")
 ```
@@ -113,3 +113,10 @@ __Answer:__ The mean is much more sensitive to the effects of the missing data. 
 1. Create a new _factor_ variable in the dataset, with two levels - "weekday" and "weekend," indicating whether a given date is a weekday or weekend day.  
 2. Make a panel plot containing a time series plot of the 5-minute interval and the average number of steps taken, averaged across all weekday days or weekend days.  
 
+```{r}
+newdata$daytype <- factor(sapply(newdata$date, function(d) { if (weekdays(d) %in% c("Saturday","Sunday")) "weekend" else "weekday" }))
+intervals <- group_by(newdata, interval, daytype)
+intervals <- summarise(intervals, avgsteps=mean(steps))
+intervals <- mutate(intervals, minutes=as.integer(interval/100), seconds=(interval - 100*minutes), index=60*minutes + seconds)
+ggplot(intervals, aes(x=index/60,y=avgsteps)) + geom_line(aes(color=daytype)) + scale_x_discrete(breaks=seq(0,24,by=4)) + xlab("Interval (hours)") + ylab("Average Steps (5 minute interval)") + ggtitle("Activity - By Day Type") + facet_wrap(~daytype,nrow=2) + theme_minimal()
+```
