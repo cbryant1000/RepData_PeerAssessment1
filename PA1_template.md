@@ -9,6 +9,14 @@
 
 ```r
 suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.1.3
+```
+
+```r
 data <- read.csv("activity.csv", stringsAsFactors=FALSE)
 data$date <- as.Date(data$date)
 summary(data)
@@ -90,9 +98,6 @@ __5-minute Interval Containing the Maximum Number of Steps__
 
 __Total Number of NA's:__ 2304
 
-__Strategy:__
-Replace the NA's in the dataset with the __median__ number of steps in each 5-minute interval for the days with no NA's in that interval.  
-
 
 ```r
 summary(data)
@@ -108,6 +113,10 @@ summary(data)
 ##  Max.   :806.00   Max.   :2012-11-30   Max.   :2355.0  
 ##  NA's   :2304
 ```
+
+__Strategy:__
+Replace the NA's in the dataset with the __median__ number of steps in each 5-minute interval for the days with no NA's in that interval.  
+
 
 ```r
 na <- filter(data, is.na(steps))
@@ -128,6 +137,28 @@ summary(newdata)
 ##  3rd Qu.:  8   3rd Qu.:2012-11-15   3rd Qu.:1766.2  
 ##  Max.   :806   Max.   :2012-11-30   Max.   :2355.0
 ```
+
+
+```r
+newdays <- group_by(newdata, date)
+newdays <- summarise(newdays, nintervals=n(), avgsteps=mean(steps,na.rm=TRUE), totsteps=nintervals*avgsteps)
+par(mfrow=c(1,2))
+plot(days$date, days$totsteps, type="h",xlab="Date",ylab="Total Steps per Day",main="Histogram - Missing Data")
+plot(newdays$date, newdays$totsteps, type="h",xlab="Date",ylab="Total Steps per Day",main="Histogram - Cleaned Data")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+
+__Total Number of Steps Taken Each Day:__  
+
+Missing Data |   Mean   |   Median  
+------------ | --------- | -----------  
+Yes | 10766.19 | 10765  
+No | 9503.87 | 10395  
+
+5. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?  
+
+The mean is much more sensitive to the effects of the missing data.  The median is also affected, but not as much by imputing values for the missing data.  Since these data are highly _skewed_, the median is a better measure of the location of the data.  
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
